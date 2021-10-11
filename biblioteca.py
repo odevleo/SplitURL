@@ -1,44 +1,22 @@
 import requests
 
-def pega_versao(link):
-    url = requests.get(link).url
-    return url
 
-
-def divide_url(split_url):
-    url_dividida = split_url.split('/')
-    return url_dividida
-
-
-def arquivo_existe(nome_do_arquivo):
-    try:
-        open(nome_do_arquivo, 'r')
-        return True
-    except:
-        return False
+def pega_valor_da_versao_do_repo(usuario,repositorio):
+    url = 'https://github.com/'+ usuario + '/'+ repositorio+ '/releases/latest'
+    req = requests.get(url).url.split('https://')[1]
+    host, usuario, repositorio, releases, tag, versao = req.split('/')
+    return {'host': host, 'usuario': usuario, 'repositorio': repositorio
+    ,'versao': versao}
 
 
 
-def cria_arquivo(nome_do_arquivo):
-    if not arquivo_existe(nome_do_arquivo):
-        arquivo = open(nome_do_arquivo, 'w')
-        arquivo.write("")
-        arquivo.close()
+def banco_existe_senao_crie(nome_banco):
+
+    return open(nome_banco, 'a')
 
 
-def read_arquivo(nome_do_arquivo):
-    if arquivo_existe(nome_do_arquivo):
-        arquivo = open(nome_do_arquivo, 'r')
-        return arquivo.read()
-    else:
-        return "Arquivo não existe."
-
-
-
-def add_arquivo(nome_do_arquivo, dados):
-    if arquivo_existe(nome_do_arquivo):
-        arquivo = open(nome_do_arquivo, 'a')
-        arquivo.write(dados + "\n")
-        arquivo.close()
-    else:
-        return "Arquivo não existe."
+def guardar_dados(nome_banco, dados):
+    arq = banco_existe_senao_crie(nome_banco)
+    arq.write(dados)
+    arq.close()
+    pass
